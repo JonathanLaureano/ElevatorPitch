@@ -1,10 +1,5 @@
 <div class="question-container">
   <div class="question-card">
-    <!-- Progress Bar -->
-    <div class="progress-bar">
-      <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
-    </div>
-    
     <!-- Loading State -->
     <div *ngIf="loading" class="loading-state">
       <div class="spinner"></div>
@@ -15,7 +10,7 @@
     <div *ngIf="error" class="error-state">
       <h2>Oops! Something went wrong</h2>
       <p>{{ error }}</p>
-      <button class="retry-btn" (click)="loadQuestions(currentQuestionIndex + 1)">
+      <button class="retry-btn" (click)="ngOnInit()">
         Try Again
       </button>
     </div>
@@ -23,7 +18,7 @@
     <!-- Question Content -->
     <div *ngIf="!loading && !error && currentQuestion" class="question-content">
       <div class="question-header">
-        <span class="question-number">Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}</span>
+        <span class="question-number">Question {{ currentQuestion.order }}</span>
         <h2>{{ currentQuestion.text }}</h2>
       </div>
       
@@ -31,10 +26,10 @@
         <div 
           *ngFor="let option of currentQuestion.options" 
           class="option"
-          [class.selected]="selectedOption === option"
+          [class.selected]="isOptionSelected(option)"
           (click)="selectOption(option)">
           <div class="option-radio">
-            <div class="radio-inner" [class.checked]="selectedOption === option"></div>
+            <div class="radio-inner" [class.checked]="isOptionSelected(option)"></div>
           </div>
           <span class="option-text">{{ option }}</span>
         </div>
@@ -43,17 +38,33 @@
       <div class="action-buttons">
         <button 
           class="submit-btn" 
-          [disabled]="!selectedOption"
-          [class.disabled]="!selectedOption"
+          [disabled]="!selectedOption || submitting"
+          [class.disabled]="!selectedOption || submitting"
           (click)="submitAnswer()">
-          {{ currentQuestionIndex === questions.length - 1 ? 'Generate My Pitch' : 'Next Question' }}
+          {{ submitting ? 'Submitting...' : 'Continue' }}
         </button>
       </div>
     </div>
     
     <!-- Session Info -->
-    <div class="session-info">
-      <small>Session ID: {{ sessionId }}</small>
+    <div class="session-info" *ngIf="uniqueLink">
+      <small>Reference: {{ uniqueLink }}</small>
+    </div>
+  </div>
+
+  <!-- Popup Modal -->
+  <div class="popup-overlay" *ngIf="showPopup" (click)="closePopup()">
+    <div class="popup-modal" (click)="$event.stopPropagation()">
+      <div class="popup-header">
+        <h3>Notice</h3>
+        <button class="popup-close" (click)="closePopup()">×</button>
+      </div>
+      <div class="popup-content">
+        <p>{{ popupMessage }}</p>
+      </div>
+      <div class="popup-actions">
+        <button class="popup-btn" (click)="closePopup()">OK</button>
+      </div>
     </div>
   </div>
 </div>

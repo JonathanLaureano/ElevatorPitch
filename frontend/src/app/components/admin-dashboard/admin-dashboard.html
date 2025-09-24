@@ -1,0 +1,101 @@
+<div class="admin-container">
+  <div class="admin-header">
+    <h1>🔧 Elevator Assistance Admin Dashboard</h1>
+    <button class="refresh-btn" (click)="loadTickets()">
+      {{ isLoading ? 'Loading...' : 'Refresh' }}
+    </button>
+  </div>
+
+  <div class="admin-content" *ngIf="!isLoading">
+    <div class="tickets-panel" [class.with-details]="selectedTicket">
+      <h2>Customer Tickets</h2>
+      
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+      
+      <div class="tickets-table" *ngIf="tickets.length > 0">
+        <div class="ticket-header">
+          <span>Name</span>
+          <span>Status</span>
+          <span>Created</span>
+          <span>Updated</span>
+        </div>
+        
+        <div 
+          class="ticket-row" 
+          *ngFor="let ticket of tickets" 
+          (click)="selectTicket(ticket)"
+          [class.selected]="selectedTicket?.userId === ticket.userId"
+        >
+          <span class="ticket-name">{{ ticket.name }}</span>
+          <span class="ticket-status" [class]="getStatusClass(ticket.isTicketOpen)">
+            {{ getStatusText(ticket.isTicketOpen) }}
+          </span>
+          <span class="ticket-date">{{ formatDate(ticket.createdAt) }}</span>
+          <span class="ticket-date">{{ formatDate(ticket.updatedAt) }}</span>
+        </div>
+      </div>
+      
+      <div *ngIf="tickets.length === 0" class="no-tickets">
+        <p>No customer tickets found.</p>
+      </div>
+    </div>
+
+    <div class="details-panel" *ngIf="selectedTicket">
+      <div class="details-header">
+        <h2>Ticket Details</h2>
+        <button class="close-btn" (click)="closeDetailsPanel()">×</button>
+      </div>
+      
+      <div class="ticket-info" *ngIf="selectedTicketUser">
+        <h3>Customer Information</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Name:</label>
+            <span>{{ selectedTicketUser.name }}</span>
+          </div>
+          <div class="info-item" *ngIf="selectedTicketUser.phoneNumber">
+            <label>Phone:</label>
+            <span>{{ selectedTicketUser.phoneNumber }}</span>
+          </div>
+          <div class="info-item">
+            <label>Unique Link:</label>
+            <span>{{ selectedTicketUser.uniqueLink }}</span>
+          </div>
+          <div class="info-item">
+            <label>Status:</label>
+            <span [class]="getStatusClass(selectedTicketUser.isTicketOpen)">
+              {{ getStatusText(selectedTicketUser.isTicketOpen) }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <div class="answers-section" *ngIf="selectedTicketAnswers.length > 0">
+        <h3>Troubleshooting Responses</h3>
+        <div class="answers-list">
+          <div class="answer-item" *ngFor="let answer of selectedTicketAnswers">
+            <div class="question">
+              <strong>Q{{ answer.question.order }}:</strong> {{ answer.question.text }}
+            </div>
+            <div class="response">
+              <strong>Answer:</strong> {{ answer.selectedOption }}
+            </div>
+            <div class="answer-time">
+              {{ formatDate(answer.createdAt) }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="selectedTicketAnswers.length === 0" class="no-answers">
+        <p>No troubleshooting responses recorded yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="loading-spinner" *ngIf="isLoading">
+    <p>Loading tickets...</p>
+  </div>
+</div>

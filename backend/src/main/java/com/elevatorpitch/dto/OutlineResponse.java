@@ -1,20 +1,20 @@
 package com.elevatorpitch.dto;
 
-public class OutlineResponse {
-    private String sessionId;
-    private String outline;
+public class TroubleshootingResponse {
+    private String uniqueLink;
+    private String summary;
     
-    public OutlineResponse() {}
+    public TroubleshootingResponse() {}
     
-    public OutlineResponse(String sessionId, String outline) {
-        this.sessionId = sessionId;
-        this.outline = outline;
+    public TroubleshootingResponse(String uniqueLink, String summary) {
+        this.uniqueLink = uniqueLink;
+        this.summary = summary;
     }
     
     // Getters and setters
-    public String getSessionId() { return sessionId; }
-    public void setSessionId(String sessionId) { this.sessionId = sessionId; }
+    public String getUniqueLink() { return uniqueLink; }
+    public void setUniqueLink(String uniqueLink) { this.uniqueLink = uniqueLink; }
     
-    public String getOutline() { return outline; }
-    public void setOutline(String outline) { this.outline = outline; }
+    public String getSummary() { return summary; }
+    public void setSummary(String summary) { this.summary = summary; }
 }
