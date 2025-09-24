@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ElevatorPitch, OutlineResponse, UserResponse } from '../../services/elevator-pitch';
+import { ElevatorAssistanceService, TroubleshootingResponse, Answer, User } from '../../services/elevator-assistance';
 
 @Component({
   selector: 'app-result',
@@ -10,22 +10,22 @@ import { ElevatorPitch, OutlineResponse, UserResponse } from '../../services/ele
   styleUrl: './result.css'
 })
 export class ResultComponent implements OnInit {
-  sessionId: string = '';
-  outline: OutlineResponse | null = null;
-  responses: UserResponse[] = [];
+  uniqueLink: string = '';
+  user: User | null = null;
+  answers: Answer[] = [];
   loading: boolean = true;
   error: string = '';
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private elevatorPitchService: ElevatorPitch
+    private elevatorAssistanceService: ElevatorAssistanceService
   ) {}
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
-      this.sessionId = params['sessionId'];
-      if (!this.sessionId) {
+      this.uniqueLink = params['uniqueLink'];
+      if (!this.uniqueLink) {
         this.router.navigate(['/']);
         return;
       }
@@ -36,16 +36,16 @@ export class ResultComponent implements OnInit {
   loadResults(): void {
     this.loading = true;
     
-    // Load outline and responses
+    // Load user info and answers
     Promise.all([
-      this.elevatorPitchService.generateOutline(this.sessionId).toPromise(),
-      this.elevatorPitchService.getSessionResponses(this.sessionId).toPromise()
-    ]).then(([outline, responses]) => {
-      this.outline = outline!;
-      this.responses = responses!;
+      this.elevatorAssistanceService.getUserByUniqueLink(this.uniqueLink).toPromise(),
+      this.elevatorAssistanceService.getUserAnswers(this.uniqueLink).toPromise()
+    ]).then(([user, answers]) => {
+      this.user = user!;
+      this.answers = answers!;
       this.loading = false;
     }).catch(error => {
-      this.error = 'Failed to load results';
+      this.error = 'Failed to load troubleshooting results';
       this.loading = false;
       console.error('Error loading results:', error);
     });
@@ -55,11 +55,22 @@ export class ResultComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  getAnswerSummary(): string {
+    if (this.answers.length === 0) return 'No troubleshooting responses recorded.';
+    
+    let summary = 'Troubleshooting Summary:\n\n';
+    this.answers.forEach(answer => {
+      summary += `Q${answer.question.order}: ${answer.question.text}\n`;
+      summary += `Answer: ${answer.selectedOption}\n\n`;
+    });
+    
+    return summary;
+  }
+
   copyToClipboard(): void {
-    if (this.outline?.outline) {
-      navigator.clipboard.writeText(this.outline.outline).then(() => {
-        alert('Outline copied to clipboard!');
-      });
-    }
+    const summary = this.getAnswerSummary();
+    navigator.clipboard.writeText(summary).then(() => {
+      alert('Summary copied to clipboard!');
+    });
   }
 }
