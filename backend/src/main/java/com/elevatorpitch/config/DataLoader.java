@@ -61,8 +61,21 @@ public class DataLoader implements CommandLineRunner {
             question3Mappings
         );
         
+        // Question 4 - Leading to Allen Bradley page
+        Map<String, String> question4Mappings = new HashMap<>();
+        question4Mappings.put("Allen Bradley", "allen-bradley-elevator");
+        question4Mappings.put("Other manufacturer", "send-tech");
+        question4Mappings.put("I don't know", "send-tech");
+        
+        Question question4 = new Question(
+            "What elevator control system manufacturer do you have?",
+            Arrays.asList("Allen Bradley", "Other manufacturer", "I don't know"),
+            4,
+            question4Mappings
+        );
+        
         // Save all questions
-        questionRepository.saveAll(Arrays.asList(question1, question2, question3));
+        questionRepository.saveAll(Arrays.asList(question1, question2, question3, question4));
         
         System.out.println("Data loader completed: initialized " + questionRepository.count() + " questions");
     }
