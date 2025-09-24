@@ -1,25 +1,28 @@
-# ElevatorPitch - Full Stack Application
+# Broken Elevator Assistance - Full Stack Application
 
-A comprehensive full-stack application built with **Apache Maven Spring Boot** backend and **Angular** frontend that helps users create personalized elevator pitches through an interactive questionnaire.
+A comprehensive full-stack application built with **Apache Maven Spring Boot** backend and **Angular** frontend that helps users troubleshoot broken elevators through an interactive questionnaire system.
 
 ![Disclaimer Page](https://github.com/user-attachments/assets/cf78d075-5d63-44be-a7d4-975f360a4224)
 
 ## 🚀 Features
 
 ### Frontend (Angular)
-- **Disclaimer Page**: Welcome page with terms and conditions acceptance
-- **Interactive Questionnaire**: Multi-step form with progress tracking
-- **Dynamic Question Flow**: 5 carefully crafted questions about professional background, goals, and strengths
-- **Result Page**: Personalized elevator pitch outline generation
+- **Registration Page**: User registration with name and contact information
+- **Interactive Troubleshooting**: Multi-step questionnaire to diagnose elevator issues
+- **Dynamic Question Flow**: Intelligent routing based on user responses and elevator type
+- **Elevator Type Help**: Educational pages to help users identify their elevator type
+- **Tech Dispatch**: Automated technical support scheduling when needed
+- **Admin Dashboard**: Administrative interface for managing support tickets
 - **Responsive Design**: Beautiful gradient UI that works on all devices
-- **Session Management**: Anonymous sessions with unique IDs
+- **Session Management**: Unique reference links for tracking support cases
 
 ### Backend (Spring Boot)
-- **RESTful APIs**: Complete REST endpoints for questions, answers, and outline generation
+- **RESTful APIs**: Complete REST endpoints for questions, answers, and ticket management
 - **Database Integration**: H2 in-memory database with JPA/Hibernate
 - **CORS Configuration**: Proper cross-origin setup for frontend communication
-- **Data Persistence**: All user responses are stored and retrievable
-- **Automatic Data Initialization**: Sample questions loaded on startup
+- **Data Persistence**: All user responses and tickets are stored and retrievable
+- **Automatic Data Initialization**: Predefined questions and routing loaded on startup
+- **Admin Features**: Backend support for ticket management and user tracking
 
 ## 🛠 Technology Stack
 
@@ -39,15 +42,12 @@ A comprehensive full-stack application built with **Apache Maven Spring Boot** b
 
 ## 📱 Application Flow
 
-1. **Landing Page**: Users see disclaimer with terms and conditions
-2. **Question Flow**: 5 multiple-choice questions about:
-   - Professional background
-   - Opportunity type sought
-   - Primary strengths
-   - Unique qualities
-   - Main goals
-3. **Result Generation**: Backend creates personalized elevator pitch outline
-4. **Final Page**: Users can copy their outline and start over
+1. **Registration Page**: Users enter their name and contact information to create a support ticket
+2. **Troubleshooting Assessment**: Initial questions determine if user can troubleshoot and location status
+3. **Elevator Type Identification**: Users identify their elevator type (Traction, Hydraulic, or get help)
+4. **Interactive Help**: Educational content helps users understand different elevator types
+5. **Technical Dispatch**: System automatically schedules technical support when needed
+6. **Admin Management**: Administrative dashboard for tracking and managing all support tickets
 
 ![Question Page](https://github.com/user-attachments/assets/d8d955d9-85b9-4be0-a1fc-37c9d410775a)
 ![Result Page](https://github.com/user-attachments/assets/879046d9-1a8c-4bce-87bc-9aba772b052e)
@@ -78,15 +78,21 @@ The frontend will start on `http://localhost:4200`
 ## 📚 API Endpoints
 
 ### Questions
-- `GET /api/questions` - Get all questions
-- `GET /api/questions/{id}` - Get specific question
+- `GET /api/questions` - Get all troubleshooting questions
+- `GET /api/questions/{id}` - Get specific question by ID
 
-### Answers
-- `POST /api/answers` - Submit an answer
-- `GET /api/responses/{sessionId}` - Get session responses
+### User Registration
+- `POST /api/users/register` - Register new user and create support ticket
 
-### Outline Generation
-- `GET /api/outline/{sessionId}` - Generate elevator pitch outline
+### Answer Submission
+- `POST /api/answers` - Submit answer and get next step in troubleshooting flow
+- `GET /api/users/{uniqueLink}/answers` - Get all answers for a specific user
+
+### User Management
+- `GET /api/users/{uniqueLink}` - Get user information by unique link
+
+### Admin Functions
+- `GET /api/admin/tickets` - Get all support tickets for administrative review
 
 ## 🗃 Database Schema
 
