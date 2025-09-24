@@ -1,40 +1,66 @@
 <div class="disclaimer-container">
   <div class="disclaimer-card">
-    <h1>Welcome to Elevator Pitch Builder</h1>
+    <h1>Broken Elevator Assistance</h1>
     
     <div class="disclaimer-content">
-      <h2>Terms and Conditions</h2>
+      <h2>Welcome to Our Elevator Support System</h2>
       <p>
-        By using this Elevator Pitch Builder application, you agree to the following terms:
+        We're here to help you troubleshoot your broken elevator. Our system will guide you through 
+        a series of questions to determine the best way to assist you.
       </p>
-      <ul>
-        <li>This tool is designed to help you create and structure your elevator pitch</li>
-        <li>The information you provide will be stored temporarily for generating your personalized pitch outline</li>
-        <li>Your responses will be used solely for creating your elevator pitch and will not be shared with third parties</li>
-        <li>You can exit the application at any time, and your session data will be automatically cleared</li>
-        <li>The generated pitch outline is a guide and should be customized to your specific needs</li>
-      </ul>
       
       <h2>How it Works</h2>
-      <p>
-        You'll be asked a series of multiple-choice questions about your background, goals, and strengths. 
-        Based on your answers, we'll generate a structured outline for your elevator pitch.
-      </p>
+      <ul>
+        <li>Provide your name and contact information</li>
+        <li>Answer a few questions about your situation</li>
+        <li>Get immediate guidance or technical support scheduling</li>
+        <li>Track your support ticket through completion</li>
+      </ul>
       
       <div class="privacy-notice">
-        <strong>Privacy Notice:</strong> Your session is anonymous and identified only by a random session ID. 
-        No personal information is required or stored permanently.
+        <strong>Privacy Notice:</strong> Your information will only be used for providing elevator support services. 
+        We'll generate a unique reference link for your case.
       </div>
     </div>
     
-    <div class="action-buttons">
-      <button class="accept-btn" (click)="acceptTerms()">
-        I Accept - Start Building My Pitch
-      </button>
-    </div>
-    
-    <div class="session-info">
-      <small>Session ID: {{ sessionId }}</small>
+    <div class="registration-form">
+      <h3>Get Started</h3>
+      <div class="form-group">
+        <label for="name">Name *</label>
+        <input 
+          type="text" 
+          id="name" 
+          [(ngModel)]="name" 
+          placeholder="Enter your full name"
+          [disabled]="isLoading"
+          required
+        />
+      </div>
+      
+      <div class="form-group">
+        <label for="phone">Phone Number (optional)</label>
+        <input 
+          type="tel" 
+          id="phone" 
+          [(ngModel)]="phoneNumber" 
+          placeholder="Enter your phone number"
+          [disabled]="isLoading"
+        />
+      </div>
+      
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+      
+      <div class="action-buttons">
+        <button 
+          class="accept-btn" 
+          (click)="submitRegistration()"
+          [disabled]="isLoading"
+        >
+          {{ isLoading ? 'Creating your support ticket...' : 'Start Troubleshooting' }}
+        </button>
+      </div>
     </div>
   </div>
 </div>

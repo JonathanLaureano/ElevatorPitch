@@ -4,16 +4,17 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "user_responses")
-public class UserResponse {
+@Table(name = "answers")
+public class Answer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @Column(name = "session_id", nullable = false)
-    private String sessionId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
     
@@ -23,13 +24,13 @@ public class UserResponse {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
-    public UserResponse() {
+    public Answer() {
         this.createdAt = LocalDateTime.now();
     }
     
-    public UserResponse(String sessionId, Question question, String selectedOption) {
+    public Answer(User user, Question question, String selectedOption) {
         this();
-        this.sessionId = sessionId;
+        this.user = user;
         this.question = question;
         this.selectedOption = selectedOption;
     }
@@ -38,8 +39,8 @@ public class UserResponse {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
     
-    public String getSessionId() { return sessionId; }
-    public void setSessionId(String sessionId) { this.sessionId = sessionId; }
+    public User getUser() { return user; }
+    public void setUser(User user) { this.user = user; }
     
     public Question getQuestion() { return question; }
     public void setQuestion(Question question) { this.question = question; }

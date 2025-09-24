@@ -1,26 +1,50 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ElevatorPitch } from '../../services/elevator-pitch';
+import { FormsModule } from '@angular/forms';
+import { ElevatorAssistanceService, UserRegistrationRequest } from '../../services/elevator-assistance';
 
 @Component({
-  selector: 'app-disclaimer',
-  imports: [CommonModule],
+  selector: 'app-user-registration',
+  imports: [CommonModule, FormsModule],
   templateUrl: './disclaimer.html',
   styleUrl: './disclaimer.css'
 })
 export class Disclaimer {
-  sessionId: string = '';
+  name: string = '';
+  phoneNumber: string = '';
+  isLoading: boolean = false;
+  error: string = '';
 
   constructor(
     private router: Router, 
-    private elevatorPitchService: ElevatorPitch
-  ) {
-    this.sessionId = this.elevatorPitchService.generateSessionId();
-  }
+    private elevatorAssistanceService: ElevatorAssistanceService
+  ) {}
 
-  acceptTerms(): void {
-    // Navigate to first question with sessionId
-    this.router.navigate(['/question', 1], { queryParams: { sessionId: this.sessionId } });
+  submitRegistration(): void {
+    if (!this.name.trim()) {
+      this.error = 'Please enter your name';
+      return;
+    }
+
+    this.isLoading = true;
+    this.error = '';
+
+    const request: UserRegistrationRequest = {
+      name: this.name.trim(),
+      phoneNumber: this.phoneNumber.trim()
+    };
+
+    this.elevatorAssistanceService.registerUser(request).subscribe({
+      next: (user) => {
+        // Navigate to first question with unique link
+        this.router.navigate(['/question', 1], { queryParams: { uniqueLink: user.uniqueLink } });
+      },
+      error: (error) => {
+        console.error('Registration failed:', error);
+        this.error = 'Registration failed. Please try again.';
+        this.isLoading = false;
+      }
+    });
   }
 }
