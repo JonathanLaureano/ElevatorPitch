@@ -95,6 +95,6 @@ export class ElevatorAssistanceService {
   }
 
   generateUniqueLink(): string {
-    return 'elevator-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now();
+    return 'elevator-' + Math.random().toString(36).substring(2, 11) + '-' + Date.now();
   }
 }
