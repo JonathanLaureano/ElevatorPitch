@@ -1,0 +1,81 @@
+<div class="help-container">
+  <div class="help-card">
+    <h1>What Type of Elevator Do I Have?</h1>
+    
+    <div class="elevator-types">
+      <div class="elevator-type">
+        <h3>🏗️ Traction Elevators</h3>
+        <div class="type-description">
+          <p><strong>Common in:</strong> High-rise buildings, modern office buildings, hotels</p>
+          <p><strong>How to identify:</strong></p>
+          <ul>
+            <li>Usually found in buildings taller than 3-4 stories</li>
+            <li>May have a machine room above the elevator shaft</li>
+            <li>Smooth, quiet operation</li>
+            <li>Steel cables visible in some installations</li>
+            <li>Often has regenerative features (energy efficient)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="elevator-type">
+        <h3>🔧 Hydraulic Elevators</h3>
+        <div class="type-description">
+          <p><strong>Common in:</strong> Low-rise buildings, shopping centers, small office buildings</p>
+          <p><strong>How to identify:</strong></p>
+          <ul>
+            <li>Usually in buildings 2-6 stories tall</li>
+            <li>Machine room typically at ground level or basement</li>
+            <li>May hear hydraulic pump noise when operating</li>
+            <li>Slower than traction elevators</li>
+            <li>Piston-like mechanism underneath or to the side</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="identification-tips">
+      <h3>💡 Quick Identification Tips</h3>
+      <div class="tip-grid">
+        <div class="tip">
+          <strong>Building Height:</strong> Hydraulic for low-rise (2-6 floors), Traction for high-rise (7+ floors)
+        </div>
+        <div class="tip">
+          <strong>Sound:</strong> Hydraulic elevators often make pumping sounds, Traction are quieter
+        </div>
+        <div class="tip">
+          <strong>Speed:</strong> Traction elevators are typically faster and smoother
+        </div>
+        <div class="tip">
+          <strong>Machine Room:</strong> Hydraulic at ground/basement level, Traction often above shaft
+        </div>
+      </div>
+    </div>
+
+    <div class="action-section" *ngIf="!needsHelp">
+      <p class="instruction">Now that you understand the differences, do you know what type you have?</p>
+      <div class="action-buttons">
+        <button class="continue-btn" (click)="acknowledgeHelp()">
+          Yes, I understand - Continue
+        </button>
+        <button class="help-btn" (click)="requestMoreHelp()">
+          I still need help identifying my elevator type
+        </button>
+      </div>
+    </div>
+
+    <div class="help-requested" *ngIf="needsHelp">
+      <div class="help-message">
+        <h3>🆘 Additional Help Requested</h3>
+        <p>
+          We've flagged your case for additional assistance. A technical specialist will help you 
+          identify your elevator type when they contact you. For now, you can continue with the 
+          troubleshooting process.
+        </p>
+        <button class="continue-btn" (click)="acknowledgeHelp()">
+          Continue Troubleshooting
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,107 @@
+<div class="result-container">
+  <div class="result-card">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading your troubleshooting summary...</p>
+    </div>
+    
+    <!-- Error State -->
+    <div *ngIf="error" class="error-state">
+      <h2>Oops! Something went wrong</h2>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadResults()">
+        Try Again
+      </button>
+    </div>
+    
+    <!-- Results Content -->
+    <div *ngIf="!loading && !error && user" class="result-content">
+      <div class="header">
+        <h1>🔧 Troubleshooting Summary</h1>
+        <p class="subtitle">Here's a summary of your elevator assistance session:</p>
+      </div>
+      
+      <!-- Customer Info -->
+      <div class="customer-section">
+        <h3>Customer Information</h3>
+        <div class="info-grid">
+          <div class="info-item">
+            <label>Name:</label>
+            <span>{{ user.name }}</span>
+          </div>
+          <div class="info-item" *ngIf="user.phoneNumber">
+            <label>Phone:</label>
+            <span>{{ user.phoneNumber }}</span>
+          </div>
+          <div class="info-item">
+            <label>Status:</label>
+            <span [class.status-open]="user.isTicketOpen" [class.status-closed]="!user.isTicketOpen">
+              {{ user.isTicketOpen ? 'Open' : 'Closed' }}
+            </span>
+          </div>
+          <div class="info-item">
+            <label>Reference:</label>
+            <span>{{ user.uniqueLink }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Troubleshooting Responses -->
+      <div class="responses-section" *ngIf="answers.length > 0">
+        <h3>Troubleshooting Responses</h3>
+        <div class="responses-list">
+          <div *ngFor="let answer of answers" class="response-item">
+            <div class="question-text">
+              <strong>Q{{ answer.question.order }}:</strong> {{ answer.question.text }}
+            </div>
+            <div class="answer-text">
+              <strong>Answer:</strong> {{ answer.selectedOption }}
+            </div>
+            <div class="response-time">
+              {{ answer.createdAt | date:'short' }}
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="answers.length === 0" class="no-responses">
+        <p>No troubleshooting responses were recorded for this session.</p>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="copy-btn" (click)="copyToClipboard()">
+          📋 Copy Summary
+        </button>
+        <button class="start-over-btn" (click)="startOver()">
+          🏠 Return to Home
+        </button>
+      </div>
+      
+      <!-- Next Steps -->
+      <div class="next-steps-section">
+        <h3>📋 Next Steps</h3>
+        <div class="next-steps-content">
+          <p *ngIf="user.isTicketOpen">
+            Your ticket is still open. If you need further assistance, please contact our support team 
+            with your reference number: <strong>{{ user.uniqueLink }}</strong>
+          </p>
+          <p *ngIf="!user.isTicketOpen">
+            Your ticket has been closed. A technician should be in contact with you soon to schedule 
+            your elevator service appointment.
+          </p>
+          <div class="contact-info">
+            <p><strong>Emergency line:</strong> <a href="tel:+1-800-ELEVATOR">1-800-ELEVATOR</a></p>
+            <p><strong>Business hours:</strong> Monday-Friday, 8 AM - 6 PM</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Session Info -->
+    <div class="session-info" *ngIf="uniqueLink">
+      <small>Reference: {{ uniqueLink }}</small>
+    </div>
+  </div>
+</div>
