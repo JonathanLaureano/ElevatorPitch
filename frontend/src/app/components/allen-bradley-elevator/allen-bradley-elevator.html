@@ -1,0 +1,114 @@
+<div class="allen-bradley-container">
+  <div class="allen-bradley-card">
+    <h1>Do You Have an Allen Bradley Elevator?</h1>
+    
+    <div class="identifier-section">
+      <h2>🔍 How to Identify an Allen Bradley Elevator</h2>
+      <p>Allen Bradley elevators are typically found in commercial buildings and are known for their reliable control systems. Here's how to identify one:</p>
+    </div>
+
+    <div class="identification-features">
+      <div class="feature-grid">
+        <div class="feature">
+          <h3>🏷️ Control Panel Labels</h3>
+          <div class="feature-content">
+            <p><strong>Look for:</strong></p>
+            <ul>
+              <li>"Allen-Bradley" or "AB" branding on control panels</li>
+              <li>Rockwell Automation labels (Allen Bradley's parent company)</li>
+              <li>ControlLogix or CompactLogix controller systems</li>
+              <li>PanelView touchscreens in the machine room</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="feature">
+          <h3>⚡ Electrical Components</h3>
+          <div class="feature-content">
+            <p><strong>Common indicators:</strong></p>
+            <ul>
+              <li>PowerFlex variable frequency drives</li>
+              <li>Bulletin series contactors and motor starters</li>
+              <li>Red and black Allen Bradley component housing</li>
+              <li>Ethernet/IP network connections</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="feature">
+          <h3>🖥️ Operator Interface</h3>
+          <div class="feature-content">
+            <p><strong>Control systems may have:</strong></p>
+            <ul>
+              <li>PanelView Plus touchscreen displays</li>
+              <li>FactoryTalk View software interfaces</li>
+              <li>RSLogix programming environments</li>
+              <li>Diagnostic displays with AB branding</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="feature">
+          <h3>📍 Where to Look</h3>
+          <div class="feature-content">
+            <p><strong>Check these locations:</strong></p>
+            <ul>
+              <li>Machine room control cabinet</li>
+              <li>Controller panels near the elevator shaft</li>
+              <li>Main electrical disconnect switches</li>
+              <li>Any visible motor control centers</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="warning-section">
+      <h3>⚠️ Important Safety Notice</h3>
+      <div class="warning-content">
+        <p>
+          <strong>Only qualified elevator technicians should access control panels.</strong> 
+          If you're unsure about your elevator type or need to access electrical components, 
+          it's safer to request professional assistance.
+        </p>
+      </div>
+    </div>
+
+    <div class="action-section" *ngIf="!needsHelp">
+      <p class="instruction">Do you believe you have an Allen Bradley elevator system?</p>
+      <div class="action-buttons">
+        <button class="yes-btn" (click)="acknowledgeHelp()">
+          Yes, I have an Allen Bradley elevator
+        </button>
+        <button class="no-btn" (click)="acknowledgeHelp()">
+          No, this doesn't match my system
+        </button>
+        <button class="help-btn" (click)="requestMoreHelp()">
+          I'm still not sure - Need expert help
+        </button>
+      </div>
+    </div>
+
+    <div class="help-requested" *ngIf="needsHelp">
+      <div class="help-message">
+        <h3>🆘 Expert Assistance Requested</h3>
+        <p>
+          We've flagged your case for additional technical support. An Allen Bradley certified 
+          technician will help you identify your elevator system when they contact you. 
+          For now, you can continue with the general troubleshooting process.
+        </p>
+        <button class="continue-btn" (click)="acknowledgeHelp()">
+          Continue with General Troubleshooting
+        </button>
+      </div>
+    </div>
+
+    <div class="additional-info">
+      <h3>📞 Need Immediate Allen Bradley Support?</h3>
+      <p>
+        For urgent Allen Bradley elevator issues, you may also contact Rockwell Automation's 
+        technical support directly. Have your elevator model and serial number ready if possible.
+      </p>
+    </div>
+  </div>
+</div>
