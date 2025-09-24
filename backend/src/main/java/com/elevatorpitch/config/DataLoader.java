@@ -20,7 +20,7 @@ public class DataLoader implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         // Only load data if questions don't already exist
-        if (questionRepository.count() > 0) {
+        if (questionRepository.exists()) {
             return;
         }
         
