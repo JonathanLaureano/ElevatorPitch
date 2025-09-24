@@ -1,10 +1,10 @@
 package com.elevatorpitch.controller;
 
-import com.elevatorpitch.dto.AnswerRequest;
-import com.elevatorpitch.dto.OutlineResponse;
+import com.elevatorpitch.dto.*;
+import com.elevatorpitch.entity.Answer;
 import com.elevatorpitch.entity.Question;
-import com.elevatorpitch.entity.UserResponse;
-import com.elevatorpitch.service.ElevatorPitchService;
+import com.elevatorpitch.entity.User;
+import com.elevatorpitch.service.ElevatorAssistanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,43 +15,60 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = "http://localhost:4200")
-public class ElevatorPitchController {
+public class ElevatorAssistanceController {
     
     @Autowired
-    private ElevatorPitchService elevatorPitchService;
+    private ElevatorAssistanceService elevatorAssistanceService;
     
     @GetMapping("/questions")
     public ResponseEntity<List<Question>> getAllQuestions() {
-        List<Question> questions = elevatorPitchService.getAllQuestions();
+        List<Question> questions = elevatorAssistanceService.getAllQuestions();
         return ResponseEntity.ok(questions);
     }
     
     @GetMapping("/questions/{id}")
     public ResponseEntity<Question> getQuestionById(@PathVariable Long id) {
-        Optional<Question> question = elevatorPitchService.getQuestionById(id);
+        Optional<Question> question = elevatorAssistanceService.getQuestionById(id);
         return question.map(ResponseEntity::ok)
                       .orElse(ResponseEntity.notFound().build());
     }
     
-    @PostMapping("/answers")
-    public ResponseEntity<UserResponse> submitAnswer(@RequestBody AnswerRequest request) {
+    @PostMapping("/users/register")
+    public ResponseEntity<User> registerUser(@RequestBody UserRegistrationRequest request) {
         try {
-            UserResponse response = elevatorPitchService.saveAnswer(request);
+            User user = elevatorAssistanceService.registerUser(request);
+            return ResponseEntity.ok(user);
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+    
+    @PostMapping("/answers")
+    public ResponseEntity<NextPageResponse> submitAnswer(@RequestBody AnswerRequest request) {
+        try {
+            NextPageResponse response = elevatorAssistanceService.submitAnswer(request);
             return ResponseEntity.ok(response);
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().build();
         }
     }
     
-    @GetMapping("/outline/{sessionId}")
-    public ResponseEntity<OutlineResponse> generateOutline(@PathVariable String sessionId) {
-        OutlineResponse outline = elevatorPitchService.generateOutline(sessionId);
-        return ResponseEntity.ok(outline);
+    @GetMapping("/users/{uniqueLink}/answers")
+    public ResponseEntity<List<Answer>> getUserAnswers(@PathVariable String uniqueLink) {
+        List<Answer> answers = elevatorAssistanceService.getUserAnswers(uniqueLink);
+        return ResponseEntity.ok(answers);
     }
     
-    @GetMapping("/responses/{sessionId}")
-    public ResponseEntity<List<UserResponse>> getSessionResponses(@PathVariable String sessionId) {
-        List<UserResponse> responses = elevatorPitchService.getSessionResponses(sessionId);
-        return ResponseEntity.ok(responses);
+    @GetMapping("/users/{uniqueLink}")
+    public ResponseEntity<User> getUserByUniqueLink(@PathVariable String uniqueLink) {
+        Optional<User> user = elevatorAssistanceService.getUserByUniqueLink(uniqueLink);
+        return user.map(ResponseEntity::ok)
+                   .orElse(ResponseEntity.notFound().build());
+    }
+    
+    @GetMapping("/admin/tickets")
+    public ResponseEntity<List<AdminTicketView>> getAllTickets() {
+        List<AdminTicketView> tickets = elevatorAssistanceService.getAllTickets();
+        return ResponseEntity.ok(tickets);
     }
 }
