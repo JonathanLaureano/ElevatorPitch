@@ -1,0 +1,72 @@
+<div class="result-container">
+  <div class="result-card">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Generating your elevator pitch outline...</p>
+    </div>
+    
+    <!-- Error State -->
+    <div *ngIf="error" class="error-state">
+      <h2>Oops! Something went wrong</h2>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadResults()">
+        Try Again
+      </button>
+    </div>
+    
+    <!-- Results Content -->
+    <div *ngIf="!loading && !error && outline" class="result-content">
+      <div class="header">
+        <h1>🎉 Your Elevator Pitch Outline</h1>
+        <p class="subtitle">Based on your responses, here's your personalized elevator pitch structure:</p>
+      </div>
+      
+      <!-- Quick Summary -->
+      <div class="summary-section">
+        <h3>Your Responses Summary</h3>
+        <div class="responses-grid">
+          <div *ngFor="let response of responses" class="response-item">
+            <div class="question-text">{{ response.question.text }}</div>
+            <div class="answer-text">{{ response.selectedOption }}</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Generated Outline -->
+      <div class="outline-section">
+        <h3>Generated Outline</h3>
+        <div class="outline-content">
+          <pre>{{ outline.outline }}</pre>
+        </div>
+      </div>
+      
+      <!-- Action Buttons -->
+      <div class="action-buttons">
+        <button class="copy-btn" (click)="copyToClipboard()">
+          📋 Copy to Clipboard
+        </button>
+        <button class="start-over-btn" (click)="startOver()">
+          🔄 Start Over
+        </button>
+      </div>
+      
+      <!-- Tips Section -->
+      <div class="tips-section">
+        <h3>💡 Tips for Your Elevator Pitch</h3>
+        <ul>
+          <li>Keep it between 30-60 seconds when spoken aloud</li>
+          <li>Practice your delivery until it feels natural</li>
+          <li>Tailor the content to your specific audience</li>
+          <li>End with a clear call-to-action or next step</li>
+          <li>Be authentic and let your personality shine through</li>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- Session Info -->
+    <div class="session-info">
+      <small>Session ID: {{ sessionId }}</small>
+    </div>
+  </div>
+</div>

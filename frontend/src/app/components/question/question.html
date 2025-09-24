@@ -1,0 +1,59 @@
+<div class="question-container">
+  <div class="question-card">
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+      <div class="progress-fill" [style.width.%]="getProgressPercentage()"></div>
+    </div>
+    
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading question...</p>
+    </div>
+    
+    <!-- Error State -->
+    <div *ngIf="error" class="error-state">
+      <h2>Oops! Something went wrong</h2>
+      <p>{{ error }}</p>
+      <button class="retry-btn" (click)="loadQuestions(currentQuestionIndex + 1)">
+        Try Again
+      </button>
+    </div>
+    
+    <!-- Question Content -->
+    <div *ngIf="!loading && !error && currentQuestion" class="question-content">
+      <div class="question-header">
+        <span class="question-number">Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}</span>
+        <h2>{{ currentQuestion.text }}</h2>
+      </div>
+      
+      <div class="options-container">
+        <div 
+          *ngFor="let option of currentQuestion.options" 
+          class="option"
+          [class.selected]="selectedOption === option"
+          (click)="selectOption(option)">
+          <div class="option-radio">
+            <div class="radio-inner" [class.checked]="selectedOption === option"></div>
+          </div>
+          <span class="option-text">{{ option }}</span>
+        </div>
+      </div>
+      
+      <div class="action-buttons">
+        <button 
+          class="submit-btn" 
+          [disabled]="!selectedOption"
+          [class.disabled]="!selectedOption"
+          (click)="submitAnswer()">
+          {{ currentQuestionIndex === questions.length - 1 ? 'Generate My Pitch' : 'Next Question' }}
+        </button>
+      </div>
+    </div>
+    
+    <!-- Session Info -->
+    <div class="session-info">
+      <small>Session ID: {{ sessionId }}</small>
+    </div>
+  </div>
+</div>
